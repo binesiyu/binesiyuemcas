@@ -38,7 +38,7 @@
 (require 'init-sessions)
 (require 'init-fonts)
 (require 'init-mmm)
-(require 'init-growl)
+;;(require 'init-growl)
 
 (require 'init-editing-utils)
 
@@ -72,21 +72,22 @@
 
 (require 'init-marmalade)
 (require 'init-misc)
-
-
+(require 'window-number)
+(window-number-meta-mode 1)
+(require 'windresize)
 ;;----------------------------------------------------------------------------
 ;; Allow access from emacsclient
 ;;----------------------------------------------------------------------------
 (require 'server)
 (unless (server-running-p)
   (server-start))
-
-
+(menu-bar-mode -1)
 ;;----------------------------------------------------------------------------
 ;; Variables configured via the interactive 'customize' interface
 ;;----------------------------------------------------------------------------
+
 (setq custom-file "~/.emacs.d/custom.el")
-(load custom-file)
+(load custom-file t)
 
 
 ;;----------------------------------------------------------------------------
