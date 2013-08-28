@@ -1,22 +1,35 @@
-;; -*- coding: utf-8 -*-
-(add-to-list 'load-path (expand-file-name "~/.emacs.d"))
+;;; This file bootstraps the configuration, which is divided into
+;;; a number of other files.
+
+(add-to-list 'load-path user-emacs-directory)
+(require 'init-benchmarking) ;; Measure startup time
 
 ;;----------------------------------------------------------------------------
 ;; Which functionality to enable (use t or nil for true and false)
 ;;----------------------------------------------------------------------------
-(setq *spell-check-support-enabled* nil)
-(setq *is-a-mac* (eq system-type 'darwin))
-(setq *is-carbon-emacs* (and *is-a-mac* (eq window-system 'mac)))
-(setq *is-cocoa-emacs* (and *is-a-mac* (eq window-system 'ns)))
+(defconst *spell-check-support-enabled* nil)
+(defconst *is-a-mac* (eq system-type 'darwin))
+(defconst *is-cocoa-emacs* (and *is-a-mac* (eq window-system 'ns)))
 
 ;;----------------------------------------------------------------------------
-;; Load configs for specific features and modes
+;; Bootstrap config
 ;;----------------------------------------------------------------------------
 (require 'init-compat)
 (require 'init-utils)
 (require 'init-site-lisp) ;; Must come before elpa, as it may provide package.el
-(require 'init-elpa)
+(require 'init-elpa)      ;; Machinery for installing required packages
 (require 'init-exec-path) ;; Set up $PATH
+
+;;----------------------------------------------------------------------------
+;; Load configs for specific features and modes
+;;----------------------------------------------------------------------------
+
+(require-package 'wgrep)
+(require-package 'project-local-variables)
+(require-package 'diminish)
+(require-package 'scratch)
+(require-package 'mwe-log-commands)
+
 (require 'init-frame-hooks)
 (require 'init-xterm)
 (require 'init-themes)
@@ -28,7 +41,7 @@
 (require 'init-isearch)
 (require 'init-uniquify)
 (require 'init-ibuffer)
-(require 'init-flymake)
+(require 'init-flycheck)
 
 (require 'init-recentf)
 (require 'init-ido)
@@ -51,7 +64,6 @@
 (require 'init-csv)
 (require 'init-erlang)
 (require 'init-javascript)
-(require 'init-sh)
 (require 'init-php)
 (require 'init-org)
 (require 'init-nxml)
@@ -61,7 +73,9 @@
 (require 'init-haskell)
 (require 'init-ruby-mode)
 (require 'init-rails)
+(require 'init-sql)
 
+(require 'init-paredit)
 (require 'init-lisp)
 (require 'init-slime)
 (require 'init-clojure)
@@ -73,6 +87,15 @@
 (require 'init-marmalade)
 (require 'init-misc)
 (require 'window-number)
+;; Extra packages which don't require any configuration
+
+(require-package 'gnuplot)
+(require-package 'lua-mode)
+(require-package 'htmlize)
+(require-package 'dsvn)
+(when *is-a-mac*
+  (require-package 'osx-location))
+(require-package 'regex-tool)
 (window-number-meta-mode 1)
 (require 'windresize)
 ;;----------------------------------------------------------------------------
@@ -85,9 +108,9 @@
 ;;----------------------------------------------------------------------------
 ;; Variables configured via the interactive 'customize' interface
 ;;----------------------------------------------------------------------------
-
-(setq custom-file "~/.emacs.d/custom.el")
-(load custom-file t)
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(when (file-exists-p custom-file)
+  (load custom-file))
 
 
 ;;----------------------------------------------------------------------------
@@ -101,7 +124,10 @@
 ;;----------------------------------------------------------------------------
 (require 'init-locales)
 
+(message "init completed in %.2fms"
+         (sanityinc/time-subtract-millis (current-time) before-init-time))
 
 ;; Local Variables:
+;; coding: utf-8
 ;; no-byte-compile: t
 ;; End:

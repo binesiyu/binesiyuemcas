@@ -20,3 +20,7 @@ cookies
 /elpa
 site-lisp/package/
 /swank
+/.mc-lists.el
+/var
+/.sqli_history
+/frame-restore-parameters

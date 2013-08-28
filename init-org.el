@@ -1,6 +1,13 @@
+(when (< emacs-major-version 24)
+  (require-package 'org))
+(require-package 'org-fstree)
+(when *is-a-mac*
+  (require-package 'org-mac-link-grabber)
+  (require-package 'org-mac-iCal))
+
+
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
-(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 
 ;; Various preferences
 (setq org-log-done t
@@ -28,6 +35,10 @@
               (sequence "WAITING(w@/!)" "SOMEDAY(S)" "PROJECT(P@)" "|" "CANCELLED(c@/!)"))))
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Org clock
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;; Save the running clock and all clock history when exiting Emacs, load it on startup
 (setq org-clock-persistence-insinuate t)
 (setq org-clock-persist t)
@@ -40,17 +51,28 @@
 ;; Removes clocked tasks with 0:00 duration
 (setq org-clock-out-remove-zero-time-clocks t)
 
-;; ;; Show iCal calendars in the org agenda
-;; (when *is-a-mac*
-;;   (eval-after-load "org"
-;;     '(if *is-a-mac* (require 'org-mac-iCal)))
-;;   (setq org-agenda-include-diary t)
+;; Show the clocked-in task - if any - in the header line
+(defun sanityinc/show-org-clock-in-header-line ()
+  (setq-default header-line-format '((" " org-mode-line-string " "))))
 
-;;   (setq org-agenda-custom-commands
+(defun sanityinc/hide-org-clock-from-header-line ()
+  (setq-default header-line-format nil))
+
+(add-hook 'org-clock-in-hook 'sanityinc/show-org-clock-in-header-line)
+(add-hook 'org-clock-out-hook 'sanityinc/hide-org-clock-from-header-line)
+(add-hook 'org-clock-cancel-hook 'sanityinc/hide-org-clock-from-header-line)
+
+(after-load 'org-clock
+  (define-key org-clock-mode-line-map [header-line mouse-2] 'org-clock-goto)
+  (define-key org-clock-mode-line-map [header-line mouse-1] 'org-clock-menu))
+
+
+;; ;; Show iCal calendars in the org agenda
+;; (when (and *is-a-mac* (require 'org-mac-iCal nil t))
+;;   (setq org-agenda-include-diary t
+;;         org-agenda-custom-commands
 ;;         '(("I" "Import diary from iCal" agenda ""
-;;            ((org-agenda-mode-hook
-;;              (lambda ()
-;;                (org-mac-iCal)))))))
+;;            ((org-agenda-mode-hook #'org-mac-iCal)))))
 
 ;;   (add-hook 'org-agenda-cleanup-fancy-diary-hook
 ;;             (lambda ()
@@ -63,17 +85,16 @@
 ;;                 (goto-char (match-beginning 0))
 ;;                 (save-excursion
 ;;                   (re-search-backward "^[0-9]+:[0-9]+-[0-9]+:[0-9]+ " nil t))
-;;                 (insert (match-string 0)))))
-;;   )
+;;                 (insert (match-string 0))))))
 
 
-(eval-after-load 'org
-  '(progn
-     (require 'org-exp)
-     (require 'org-clock)
-     ;;(require 'org-checklist)
-     (require 'org-fstree)))
-
-(add-hook 'org-mode-hook 'inhibit-autopair)
+(after-load 'org
+  (define-key org-mode-map (kbd "C-M-<up>") 'org-up-element)
+  (when *is-a-mac*
+    (define-key org-mode-map (kbd "M-h") nil))
+  (define-key org-mode-map (kbd "C-M-<up>") 'org-up-element)
+  (when *is-a-mac*
+    (autoload 'omlg-grab-link "org-mac-link-grabber")
+    (define-key org-mode-map (kbd "C-c g") 'omlg-grab-link)))
 
 (provide 'init-org)
