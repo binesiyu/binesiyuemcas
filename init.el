@@ -48,15 +48,17 @@
 (require 'init-hippie-expand)
 (require 'init-auto-complete)
 (require 'init-windows)
+
 (require 'init-sessions)
 (require 'init-fonts)
 (require 'init-mmm)
-(require 'init-growl)
+
+;;(require 'init-growl)
 
 (require 'init-editing-utils)
 
 (require 'init-darcs)
-(require 'init-git)
+;;(require 'init-git)
 
 (require 'init-crontab)
 (require 'init-textile)
@@ -72,7 +74,7 @@
 (require 'init-python-mode)
 (require 'init-haskell)
 (require 'init-ruby-mode)
-(require 'init-rails)
+;;(require 'init-rails)
 (require 'init-sql)
 
 (require 'init-paredit)
