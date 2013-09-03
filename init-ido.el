@@ -10,6 +10,7 @@
 (ido-ubiquitous-mode t)
 
 (require-package 'smex)
+(smex-initialize)
 (global-set-key (kbd "M-x") 'smex)
 
 (require-package 'idomenu)
