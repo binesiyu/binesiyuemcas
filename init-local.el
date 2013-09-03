@@ -1,6 +1,7 @@
-﻿(define-key global-map "\C-h" 'delete-backward-char)
-(define-key global-map "\C-x/" 'help-command)
-(define-key global-map "\C-\M-x" 'eval-defun)
+﻿
+(global-set-key "\C-h" 'delete-backward-char)
+(global-set-key "\C-x/" 'help-command)
+;(define-key global-map "\C-\M-x" 'eval-defun)
 ;(define-key global-map "\C-i" 'newline)
 ;; Setting English Font
 (set-face-attribute
@@ -10,7 +11,7 @@
 (dolist (charset '(kana han symbol cjk-misc bopomofo))
     (set-fontset-font (frame-parameter nil 'font)
                       charset
-                      (font-spec :family "Microsoft Yahei" :size 12)))
+                      (font-spec :family "Microsoft Yahei" :size 14)))
 
 
 (setq echo-keystrokes 0.1)
@@ -23,6 +24,9 @@
       scroll-conservatively 10000)
 
 (setq kill-do-not-save-duplicates t)
+(menu-bar-mode -1)
+
+(add-hook 'window-setup-hook 'maximize-frame t)
 
 (provide 'init-local)
-(menu-bar-mode -1)
+
