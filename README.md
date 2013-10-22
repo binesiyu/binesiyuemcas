@@ -12,26 +12,33 @@ config adds improved defaults and extended support for the following:
 * Ruby / Ruby on Rails
 * CSS / LESS / SASS / SCSS
 * HAML / Markdown / Textile / ERB
-* Clojure (via nrepl and slime)
+* Clojure (via nrepl)
 * Javascript / Coffeescript
 * Python
 * PHP
 * Haskell
 * Erlang
-* Common Lisp
+* Common Lisp (with Slime)
 
 In particular, there's a nice config for *tab autocompletion*, and
-flymake is used to immediately highlight syntax errors in Ruby, HAML,
-Python, Javascript, PHP and some other languages.
+flycheck is used to immediately highlight syntax errors in Ruby, HAML,
+Python, Javascript, PHP and a number of other languages.
 
 ## Requirements
 
-* Emacs 23 or greater (note that Emacs 24 is required for some functionality)
+* Emacs 23 or greater (note that Emacs 24 is required for some
+  functionality, and will likely become the minimum required version
+  some time soon.)
 
 ## Installation
 
 To install, clone this repo to `~/.emacs.d`, i.e. ensure that the
-`init.el` contained in this repo ends up at `~/.emacs.d/init.el`.
+`init.el` contained in this repo ends up at `~/.emacs.d/init.el`:
+
+```
+git clone https://github.com/purcell/emacs.d.git ~/.emacs.d
+```
+
 Upon starting up Emacs for the first time, further third-party
 packages will be automatically downloaded and installed.
 

@@ -59,6 +59,7 @@
 
 ;;; git-svn support
 
+(require-package 'magit-svn)
 (after-load 'magit-key-mode
   (require 'magit-svn))
 
@@ -90,8 +91,8 @@
 
 (require-package 'yagist)
 (require-package 'github-browse-file)
-;(require-package 'bug-reference-github)
-;(add-hook 'prog-mode-hook 'bug-reference-prog-mode)
+(require-package 'bug-reference-github)
+(add-hook 'prog-mode-hook 'bug-reference-prog-mode)
 
 
 
