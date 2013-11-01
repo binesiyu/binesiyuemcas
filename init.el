@@ -78,8 +78,8 @@
 ;(require 'init-sql)
 
 (require 'init-paredit)
-(require 'init-lisp)
-(require 'init-slime)
+;(require 'init-lisp)
+;(require 'init-slime)
 ;(require 'init-clojure)
 ;(require 'init-common-lisp)
 

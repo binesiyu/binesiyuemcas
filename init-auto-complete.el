@@ -1,3 +1,7 @@
+(require-package 'yasnippet)
+(require 'yasnippet)
+(yas/global-mode 1)
+(yas-minor-mode nil)
 (require-package 'auto-complete)
 (require 'auto-complete-config)
 (global-auto-complete-mode t)
@@ -15,9 +19,9 @@
 
 ;; hook AC into completion-at-point
 (defun sanityinc/auto-complete-at-point ()
-  (when (and (not (minibufferp)) 
-	     (fboundp 'auto-complete-mode)
-	     auto-complete-mode)
+  (when (and (not (minibufferp))
+             (fboundp 'auto-complete-mode)
+             auto-complete-mode)
     (auto-complete)))
 
 (defun set-auto-complete-as-completion-at-point-function ()
@@ -31,6 +35,7 @@
 (set-default 'ac-sources
              '(ac-source-imenu
                ac-source-dictionary
+               ac-source-yasnippet
                ac-source-words-in-buffer
                ac-source-words-in-same-mode-buffers
                ac-source-words-in-all-buffer))
